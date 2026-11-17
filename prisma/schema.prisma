@@ -1,0 +1,428 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                       String                @id @default(cuid())
+  name                     String?
+  email                    String                @unique
+  storeName                String?
+  storeDescription         String?
+  storeLogo                String?
+  storeTheme               Json?
+  downloadCount            Int                   @default(0)
+  avatar_url               String?
+  eliteBadgeColor          String?
+  username                 String?               @unique
+  referralCode             String?               @unique
+  referredBy               String?
+  earnings                 Int?                  @default(0)
+  template_earnings        Int?                  @default(0)
+  is_admin                 Boolean?              @default(false)
+  digital_product_earnings Int?                  @default(0) @map("digital_product_earnings")
+  bioDescription           String?
+  bioStoreUrl              String?
+  bioReferralUrl           String?
+  bioEnabled               Boolean               @default(true)
+  showStoreButton          Boolean               @default(true)
+  showReferralButton       Boolean               @default(true)
+  withdrawBankName         String?
+  withdrawAccountNumber    String?
+  withdrawAccountName      String?
+  clickTrackings           ClickTracking[]
+  referred                 Referral?             @relation("Referred")
+  referrals                Referral[]            @relation("Referrer")
+  storeVisitTrackings      StoreVisitTracking[]
+  userProducts             UserProduct[]
+  withdrawRequests         WithdrawRequest[]
+  digital_product_orders   DigitalProductOrder[]
+  userDigitalProducts      UserDigitalProduct[]
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  id            String    @id @default(cuid())
+  userId        String    @unique @map("userid")
+  status        String
+  plan          String
+  createdAt     DateTime? @default(now()) @map("createdat") @db.Timestamptz(6)
+  updatedAt     DateTime? @default(now()) @updatedAt @map("updatedat") @db.Timestamptz(6)
+  paymentMethod String?   @map("paymentmethod")
+  paymentStatus String?   @default("none") @map("paymentstatus")
+
+  @@index([userId])
+  @@map("subscription")
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  userId        String
+  amount        Int
+  method        String
+  status        String
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  proofUrl      String?
+  proofFilename String?
+  referralFee   Int?
+  platformFee   Int?
+  referralId    String?
+  whatsapp      String?
+  payerName     String?
+
+  @@index([userId])
+}
+
+model MasterProduct {
+  id               String        @id @default(cuid())
+  title            String
+  price            Int
+  thumbnail        String
+  productUrl       String?
+  contentUrl       Json?
+  description      String?
+  createdAt        DateTime      @default(now())
+  category         String?
+  shopeeLink       String?
+  tiktokLink       String?
+  subCategory      String?
+  granularCategory String?
+  videoUrl         String?
+  assetType        String?       @default("image")
+  userProducts     UserProduct[]
+}
+
+model UserProduct {
+  id             String          @id @default(cuid())
+  userId         String
+  productId      String
+  affiliateLink  String
+  createdAt      DateTime        @default(now())
+  clickTrackings ClickTracking[]
+  product        MasterProduct   @relation(fields: [productId], references: [id])
+  user           User            @relation(fields: [userId], references: [id])
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model ClickTracking {
+  id            String      @id @default(cuid())
+  userId        String
+  productId     String
+  userProductId String
+  ipAddress     String?
+  userAgent     String?
+  referrer      String?
+  clickedAt     DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id])
+  userProduct   UserProduct @relation(fields: [userProductId], references: [id])
+
+  @@index([userId])
+  @@index([productId])
+  @@index([userProductId])
+  @@index([clickedAt])
+}
+
+model StoreVisitTracking {
+  id        String   @id @default(cuid())
+  userId    String
+  ipAddress String?
+  userAgent String?
+  referrer  String?
+  visitedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([visitedAt])
+}
+
+model PaymentRequest {
+  id            String   @id
+  userId        String
+  plan          String
+  amount        Int
+  paymentMethod String
+  accountNumber String
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
+
+  @@index([userId])
+}
+
+model MembershipPayment {
+  id                    String   @id @default(cuid())
+  userId                String
+  plan                  String
+  amount                Int
+  status                String   @default("pending_payment")
+  paymentMethod         String?
+  midtransOrderId       String?  @unique
+  midtransTransactionId String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([userId])
+  @@index([midtransOrderId])
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model BonusBundle {
+  id                String   @id
+  name              String?
+  description       String?
+  asseturls         Json?    @db.Json
+  relatedproductids String[]
+}
+
+model Referral {
+  id           String            @id @default(cuid())
+  referrerId   String
+  referredId   String            @unique
+  referralCode String
+  status       String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  referred     User              @relation("Referred", fields: [referredId], references: [id])
+  referrer     User              @relation("Referrer", fields: [referrerId], references: [id])
+  earnings     ReferralEarning[]
+
+  @@index([referrerId])
+  @@index([referredId])
+}
+
+model ReferralEarning {
+  id         String    @id @default(cuid())
+  referralId String
+  amount     Int
+  status     String
+  createdAt  DateTime  @default(now())
+  paidAt     DateTime?
+  referral   Referral  @relation(fields: [referralId], references: [id])
+
+  @@index([referralId])
+}
+
+model WithdrawRequest {
+  id            String    @id @default(cuid())
+  userId        String
+  amount        Int
+  bankName      String
+  accountNumber String
+  status        String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  approvedAt    DateTime?
+  accountName   String    @default("")
+  user          User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model ContentAsset {
+  id              String    @id @default(cuid())
+  title           String
+  description     String?
+  thumbnail       String?
+  createdAt       DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  isActive        Boolean?  @default(true) @map("is_active")
+  sortOrder       Int?      @default(0) @map("sort_order")
+  googleDriveLink String?   @map("google_drive_link")
+
+  @@map("content_assets")
+}
+
+model Copywriting {
+  id        String    @id @default(cuid())
+  title     String?
+  content   String
+  category  String?
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  isActive  Boolean?  @default(true) @map("is_active")
+  sortOrder Int?      @default(0) @map("sort_order")
+
+  @@map("copywriting")
+}
+
+model Caption {
+  id        String    @id @default(cuid())
+  title     String?
+  content   String
+  category  String
+  isActive  Boolean?  @default(true) @map("is_active")
+  sortOrder Int?      @default(0) @map("sort_order")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("captions")
+}
+
+model MasterTemplate {
+  id            String         @id @default(dbgenerated("gen_random_uuid()"))
+  title         String
+  description   String?
+  price         Int
+  thumbnail     String
+  category      String
+  subCategory   String?        @map("sub_category")
+  features      String[]
+  status        String?        @default("active")
+  createdAt     DateTime?      @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt     DateTime?      @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+  previewImages String[]       @default([]) @map("preview_images")
+  technology    String[]       @default(["Next.js", "React", "Tailwind CSS", "TypeScript"])
+  deliverables  String[]       @default([])
+  previewUrl    String?        @map("preview_url")
+  originalPrice Int?           @map("original_price")
+  badge         String?
+  userTemplates UserTemplate[]
+
+  @@index([category], map: "idx_master_templates_category")
+  @@map("master_templates")
+}
+
+model UserTemplate {
+  id               String          @id @default(dbgenerated("gen_random_uuid()"))
+  userId           String          @map("user_id")
+  masterTemplateId String          @map("master_template_id")
+  affiliateLink    String          @map("affiliate_link")
+  created_at       DateTime?       @default(now()) @db.Timestamp(6)
+  orders           TemplateOrder[]
+  masterTemplate   MasterTemplate  @relation(fields: [masterTemplateId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([userId, masterTemplateId], map: "idx_user_templates_unique")
+  @@index([userId], map: "idx_user_templates_user_id")
+  @@map("user_templates")
+}
+
+model TemplateOrder {
+  id                    String       @id @default(dbgenerated("gen_random_uuid()"))
+  userTemplateId        String       @map("user_template_id")
+  userId                String       @map("user_id")
+  affiliateId           String?      @map("affiliate_id")
+  status                String?      @default("pending")
+  downloadUrl           String?      @map("download_url")
+  downloadExpireAt      DateTime?    @map("download_expire_at") @db.Timestamp(6)
+  downloadCount         Int?         @default(0) @map("download_count")
+  paymentProof          String?      @map("payment_proof")
+  created_at            DateTime?    @default(now()) @db.Timestamp(6)
+  customerName          String?      @map("customer_name") @db.VarChar(255)
+  customerEmail         String?      @map("customer_email") @db.VarChar(255)
+  customerPhone         String?      @map("customer_phone") @db.VarChar(255)
+  notes                 String?
+  midtransOrderId       String?      @map("midtrans_order_id") @db.VarChar(255)
+  midtransTransactionId String?      @map("midtrans_transaction_id") @db.VarChar(255)
+  paymentMethod         String?      @map("payment_method") @db.VarChar(255)
+  userTemplate          UserTemplate @relation(fields: [userTemplateId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([affiliateId], map: "idx_template_orders_affiliate_id")
+  @@index([userId], map: "idx_template_orders_user_id")
+  @@index([userTemplateId], map: "idx_template_orders_user_template_id")
+  @@index([midtransOrderId], map: "idx_template_orders_midtrans_order_id")
+  @@map("template_orders")
+}
+
+model MasterDigitalProduct {
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title               String               @db.VarChar(255)
+  description         String?
+  price               Int
+  thumbnail           String               @db.VarChar(255)
+  previewUrl          String?              @map("preview_url") @db.VarChar(255)
+  downloadUrl         String               @map("download_url") @db.VarChar(255)
+  category            String               @db.VarChar(255)
+  subCategory         String?              @map("sub_category") @db.VarChar(255)
+  productType         String?              @default("ebook") @map("product_type") @db.VarChar(255)
+  contentCategory     String?              @map("content_category") @db.VarChar(255)
+  features            String[]
+  status              String?              @default("active") @db.VarChar(255)
+  createdAt           DateTime?            @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt           DateTime?            @default(now()) @updatedAt @map("updated_at") @db.Timestamp(6)
+  previewImages       String[]             @map("preview_images")
+  originalPrice       Int?                 @map("original_price")
+  badge               String?              @db.VarChar(255)
+  userDigitalProducts UserDigitalProduct[]
+
+  @@index([category], map: "idx_master_digital_products_category")
+  @@index([productType], map: "idx_master_digital_products_product_type")
+  @@map("master_digital_products")
+}
+
+model UserDigitalProduct {
+  id                     String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                 String                @map("user_id") @db.VarChar(255)
+  masterDigitalProductId String                @map("master_digital_product_id") @db.Uuid
+  affiliateLink          String                @map("affiliate_link") @db.VarChar(255)
+  created_at             DateTime?             @default(now()) @db.Timestamp(6)
+  orders                 DigitalProductOrder[]
+  masterDigitalProduct   MasterDigitalProduct  @relation(fields: [masterDigitalProductId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                   User                  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([userId, masterDigitalProductId], map: "user_digital_products_unique")
+  @@index([userId], map: "idx_user_digital_products_user_id")
+  @@map("user_digital_products")
+}
+
+model DigitalProductOrder {
+  id                    String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userDigitalProductId  String             @map("user_digital_product_id") @db.Uuid
+  userId                String?            @map("user_id") @db.VarChar(255)
+  affiliateId           String?            @map("affiliate_id") @db.VarChar(255)
+  status                String?            @default("pending") @db.VarChar(255)
+  downloadUrl           String?            @map("download_url") @db.VarChar(255)
+  downloadExpireAt      DateTime?          @map("download_expire_at") @db.Timestamp(6)
+  downloadCount         Int?               @default(0) @map("download_count")
+  paymentProof          String?            @map("payment_proof") @db.VarChar(255)
+  customerName          String?            @map("customer_name") @db.VarChar(255)
+  customerEmail         String?            @map("customer_email") @db.VarChar(255)
+  customerPhone         String?            @map("customer_phone") @db.VarChar(255)
+  notes                 String?
+  created_at            DateTime?          @default(now()) @db.Timestamp(6)
+  midtransOrderId       String?            @map("midtrans_order_id") @db.VarChar(255)
+  midtransTransactionId String?            @map("midtrans_transaction_id") @db.VarChar(255)
+  paymentMethod         String?            @map("payment_method") @db.VarChar(255)
+  paymentChannel        String?            @map("payment_channel") @db.VarChar(255)
+  userDigitalProduct    UserDigitalProduct @relation(fields: [userDigitalProductId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User                  User?              @relation(fields: [userId], references: [id], onUpdate: NoAction)
+
+  @@index([affiliateId], map: "idx_digital_product_orders_affiliate_id")
+  @@index([userId], map: "idx_digital_product_orders_user_id")
+  @@index([userDigitalProductId], map: "idx_digital_product_orders_user_digital_product_id")
+  @@index([midtransOrderId], map: "idx_digital_product_orders_midtrans_order_id")
+  @@map("digital_product_orders")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model templates {
+  id           String    @id @default(dbgenerated("gen_random_uuid()"))
+  title        String
+  description  String?
+  price        Int
+  thumbnail    String
+  preview_url  String?
+  download_url String
+  category     String
+  sub_category String?
+  features     String[]
+  status       String?   @default("active")
+  created_at   DateTime? @default(now()) @db.Timestamp(6)
+  updated_at   DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([category], map: "idx_templates_category")
+}

@@ -1,0 +1,24 @@
+export function getMembershipRequestTemplate(
+  userName: string | null,
+  userEmail: string,
+  plan: string,
+  paymentMethod: string,
+  amount: number
+): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h2 style="color: #8B5CF6;">Permintaan Upgrade Membership Baru</h2>
+      <p>Ada user yang request upgrade membership:</p>
+      <ul>
+        <li><strong>Nama:</strong> ${userName || 'N/A'}</li>
+        <li><strong>Email:</strong> ${userEmail}</li>
+        <li><strong>Plan:</strong> ${plan}</li>
+        <li><strong>Metode Pembayaran:</strong> ${paymentMethod.toUpperCase()}</li>
+        <li><strong>Jumlah:</strong> Rp ${amount.toLocaleString('id-ID')}</li>
+        <li><strong>Waktu:</strong> ${new Date().toLocaleString('id-ID')}</li>
+      </ul>
+      <p>Segera cek dan approve pembayaran di admin dashboard.</p>
+      <p style="color: #A1A1AA; font-size: 12px;">Email ini dikirim otomatis oleh Rysee Platform</p>
+    </div>
+  `;
+}

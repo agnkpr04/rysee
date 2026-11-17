@@ -1,0 +1,62 @@
+export function getOrderApprovalTemplate(
+  buyerName: string | null,
+  productTitle: string,
+  productType: 'template' | 'digital-product',
+  orderAmount: number,
+  downloadUrl: string,
+  downloadExpireAt: Date | null
+): string {
+  const productLabel = productType === 'template' ? 'Website Template' : 'Digital Product';
+  const expireText = downloadExpireAt
+    ? `Link berlaku sampai <strong>${downloadExpireAt.toLocaleString('id-ID')}</strong>`
+    : 'Link berlaku selamanya';
+
+  const downloadText = productType === 'template'
+    ? 'Website template Anda sudah siap! Klik tombol di bawah untuk download file ZIP berisi source code website:'
+    : 'Klik tombol di bawah untuk download file:';
+  const buttonText = productType === 'template' ? '📥 Download ZIP Template' : '📥 Download Sekarang';
+  const tipsText = productType === 'template'
+    ? '<strong>Tips:</strong> File ZIP berisi source code website yang bisa Anda deploy ke hosting Anda sendiri. Simpan file ini di tempat aman. Jika ada kendala, balas email ini atau hubungi admin.'
+    : '<strong>Tips:</strong> Simpan link ini di tempat aman atau download segera. Jika ada kendala, balas email ini atau hubungi admin.';
+
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(to right, #8B5CF6, #D946EF, #EC4899); padding: 24px; border-radius: 8px; text-align: center; margin-bottom: 24px;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">🎉 Pembayaran Diterima!</h1>
+      </div>
+
+      <p>Halo <strong>${buyerName || 'Customer'}</strong>,</p>
+
+      <p>Pembayaran kamu sudah kami verifikasi. Berikut detail pesanan:</p>
+
+      <div style="background: #F9F9FB; border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="padding: 6px 0;"><strong>Produk:</strong> ${productTitle}</li>
+          <li style="padding: 6px 0;"><strong>Jenis:</strong> ${productLabel}</li>
+          <li style="padding: 6px 0;"><strong>Total Bayar:</strong> Rp ${orderAmount.toLocaleString('id-ID')}</li>
+          <li style="padding: 6px 0;"><strong>Tanggal Approval:</strong> ${new Date().toLocaleString('id-ID')}</li>
+        </ul>
+      </div>
+
+      <div style="background: white; border: 2px solid #8B5CF6; border-radius: 8px; padding: 20px; text-align: center; margin: 24px 0;">
+        <p style="margin: 0 0 12px 0; color: #18181B; font-weight: 600;">${downloadText}</p>
+        <a href="${downloadUrl}"
+           style="display: inline-block; background: linear-gradient(to right, #8B5CF6, #D946EF); color: white; padding: 12px 32px; border-radius: 6px; text-decoration: none; font-weight: 600;">
+          ${buttonText}
+        </a>
+        <p style="margin: 12px 0 0 0; font-size: 12px; color: #A1A1AA;">${expireText}</p>
+      </div>
+
+      <p style="font-size: 13px; color: #71717A;">
+        ${tipsText}
+      </p>
+
+      <hr style="border: none; border-top: 1px solid #E4E4E7; margin: 24px 0;" />
+
+      <p style="color: #A1A1AA; font-size: 12px; text-align: center;">
+        Terima kasih sudah berbelanja di Rysee Platform<br/>
+        Email ini dikirim otomatis. Jangan reply ke alamat ini untuk pertanyaan.
+      </p>
+    </div>
+  `;
+}
