@@ -82,7 +82,6 @@ export async function GET(request: NextRequest) {
     // ========================================
     const tierBreakdown: Record<MembershipTier, { revenue: number; commission: number; orders: number }> = {
       free: { revenue: 0, commission: 0, orders: 0 },
-      pro: { revenue: 0, commission: 0, orders: 0 },
       premium: { revenue: 0, commission: 0, orders: 0 },
     };
 

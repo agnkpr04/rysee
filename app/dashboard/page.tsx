@@ -8,13 +8,13 @@ import {
   MoreHorizontal, Activity,
 } from 'lucide-react';
 import OverviewSection from './Overview/OverviewSection';
-import AdminSection from './CRUDAdmin/AdminSection';
+import AdminSection from './Admins/AdminSection';
 import MembershipSection from './Membership/MembershipSection';
-import ProductSection from './ProductMng/ProductSection';
+import ProductSection from './Products/ProductSection';
 import AnalyticsSection from './Analytics/AnalyticsSection';
 import ReferralSection from './Referral/ReferralSection';
-import TemplateSection from './TemplateMng/TemplateSection';
-import DigitalProductSection from './DigitalProductMng/DigitalProductSection';
+import TemplateSection from './Templates/TemplateSection';
+import DigitalProductSection from './DigitalProducts/DigitalProductSection';
 
 type Section = 'overview' | 'products' | 'admins' | 'membership' | 'analytics' | 'referral' | 'website' | 'digital-products';
 

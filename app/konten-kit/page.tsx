@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Package, FileText, Lock, Crown, Download, Copy, Check, ArrowLeft, ArrowRight, Sparkles, MessageSquare, BookOpen } from 'lucide-react';
 import GlobalNavbar from '@/components/GlobalNavbar';
+import Link from 'next/link';
 
 const accentGradient = "from-[#8B5CF6] via-[#D946EF] to-[#EC4899]";
 
@@ -175,12 +176,12 @@ export default function KontenKitPage() {
             <p className="text-[#A1A1AA] mb-8 max-w-md mx-auto">
               Silakan login untuk mengakses Konten Kit.
             </p>
-            <a
+            <Link
               href="/auth/login"
               className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium hover:opacity-90 transition-all"
             >
               Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -231,13 +232,13 @@ export default function KontenKitPage() {
                 ))}
               </div>
             </div>
-            <a
+            <Link
               href="/pricing"
               className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium shadow-lg shadow-[#8B5CF6]/20 hover:opacity-90 transition-all"
             >
               <Crown className="w-4 h-4" strokeWidth={1.5} />
               Upgrade ke Premium
-            </a>
+            </Link>
           </div>
         ) : (
           <>
@@ -263,13 +264,13 @@ export default function KontenKitPage() {
                     <p className="text-xs text-[#71717A] mb-3">
                       Pelajari strategi dan tips jualan produk digital di platform Rysee untuk membangun bisnis yang sukses.
                     </p>
-                    <a
+                    <Link
                       href="/panduan-produk-digital"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-xs font-medium hover:opacity-90 transition-all"
                     >
                       Baca Panduan
                       <ArrowRight className="w-3 h-3" strokeWidth={1.5} />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -353,13 +354,13 @@ export default function KontenKitPage() {
               <p className="text-sm text-[#A1A1AA] mb-6">
                 Mentahan konten untuk jualan produk digital akan segera tersedia.
               </p>
-              <a
+              <Link
                 href="/panduan-produk-digital"
                 className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium hover:opacity-90 transition-all"
               >
                 <BookOpen className="w-4 h-4" strokeWidth={1.5} />
                 Baca Panduan
-              </a>
+              </Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -421,13 +422,13 @@ export default function KontenKitPage() {
               <p className="text-sm text-[#A1A1AA] mb-6">
                 Caption untuk jualan produk digital akan segera tersedia.
               </p>
-              <a
+              <Link
                 href="/panduan-produk-digital"
                 className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium hover:opacity-90 transition-all"
               >
                 <BookOpen className="w-4 h-4" strokeWidth={1.5} />
                 Baca Panduan
-              </a>
+              </Link>
             </div>
           ) : (
             <div className="space-y-6">
@@ -500,13 +501,13 @@ export default function KontenKitPage() {
               <p className="text-sm text-[#A1A1AA] mb-6">
                 Hook untuk jualan produk digital akan segera tersedia.
               </p>
-              <a
+              <Link
                 href="/panduan-produk-digital"
                 className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium hover:opacity-90 transition-all"
               >
                 <BookOpen className="w-4 h-4" strokeWidth={1.5} />
                 Baca Panduan
-              </a>
+              </Link>
             </div>
           ) : (
             <div className="space-y-4">

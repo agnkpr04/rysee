@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { User, LogOut, Store } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import Link from 'next/link';
 import { getClientUser } from '@/lib/client-auth';
 
 interface AuthHeaderProps {
@@ -75,13 +76,13 @@ export default function AuthHeader({ currentPage = 'catalog' }: AuthHeaderProps)
   if (!user) {
     return (
       <div className="flex justify-end">
-        <a 
+        <Link
           href="/auth/login"
           className="flex items-center gap-2 px-4 py-2 bg-black text-white text-[9px] md:text-[10px] uppercase tracking-[0.2em] hover:opacity-80 transition-all"
         >
           <User className="w-4 h-4" />
           Login
-        </a>
+        </Link>
       </div>
     );
   }

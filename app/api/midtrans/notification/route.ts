@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const notificationJson = await request.json();
 
     // Verify notification signature
-    // @ts-ignore - midtrans-client type definition is incomplete
+    // @ts-expect-error - midtrans-client type definition is incomplete
     const statusResponse = await coreApi.transaction.notification(notificationJson);
     
     const orderId = statusResponse.order_id;

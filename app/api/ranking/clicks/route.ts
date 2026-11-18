@@ -55,10 +55,8 @@ export async function GET() {
 
     const planMap = new Map();
     const storeThemeMap = new Map();
-    const now = new Date();
     subscriptions.forEach(sub => {
-      const isExpired = sub.endDate && new Date(sub.endDate) < now;
-      const isActive = sub.status === 'active' && !isExpired;
+      const isActive = sub.status === 'active';
       planMap.set(sub.userId, isActive ? sub.plan : 'free');
     });
     users.forEach(user => {

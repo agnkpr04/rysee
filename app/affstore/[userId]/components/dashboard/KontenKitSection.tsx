@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Package, FileText, Lock, Crown, Download, Copy, Check, Sparkles, MessageSquare, BookOpen, ArrowRight } from 'lucide-react';
 
 const accentGradient = "from-[#8B5CF6] via-[#D946EF] to-[#EC4899]";
@@ -200,13 +201,13 @@ export default function KontenKitSection({ isPremium, isPaid }: KontenKitSection
             <p className="text-sm text-[#A1A1AA] mb-4">
               Upgrade ke Pro atau Premium untuk mengakses ratusan konten assets siap pakai.
             </p>
-            <a
+            <Link
               href="/#pricing"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium hover:opacity-90 transition-all"
             >
               <Crown className="w-4 h-4" strokeWidth={1.5} />
               Upgrade Sekarang
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

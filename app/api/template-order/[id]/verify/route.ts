@@ -5,8 +5,9 @@ import { getTemplateCommissionRate, normalizeTier } from '@/lib/membership-confi
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     const { data: { session } } = await supabase.auth.getSession();
     

@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     // Validate user template exists
     const userTemplate = await prisma.userTemplate.findUnique({
       where: { id: userTemplateId },
-      include: { masterTemplate: true, user: true },
+      include: { masterTemplate: true },
     });
 
     if (!userTemplate) {
@@ -62,6 +62,12 @@ export async function POST(request: NextRequest) {
       );
     }
     const validatedAffiliateId = userTemplate.userId;
+
+    // Get affiliate (store owner) info
+    const user = await prisma.user.findUnique({
+      where: { id: userTemplate.userId },
+      select: { id: true, name: true, email: true }
+    });
 
     // Upload proof to Supabase Storage if provided
     let proofUrl: string | null = null;
@@ -128,11 +134,12 @@ export async function POST(request: NextRequest) {
     );
 
     // Send notification to affiliate (store owner)
-    if (validatedAffiliateId && userTemplate.user.email) {
+    if (validatedAffiliateId && user?.email) {
       await sendAffiliateOrderNotification(
-        userTemplate.user.email,
-        userTemplate.user.name,
+        user.email,
+        user.name,
         customerName,
+        customerEmail,
         userTemplate.masterTemplate.title,
         'template',
         userTemplate.masterTemplate.price

@@ -152,7 +152,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user from database
-    let user = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
 
@@ -197,7 +197,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Get user from database
-    let user = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
 

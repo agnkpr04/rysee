@@ -24,26 +24,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'userId, plan, and duration are required' }, { status: 400 });
     }
 
-    // Calculate end date
-    const startDate = new Date();
-    const endDate = new Date();
-    endDate.setDate(startDate.getDate() + duration);
-
     // Create or update subscription
     const subscription = await prisma.subscription.upsert({
       where: { userId },
       update: {
         status: 'active',
         plan,
-        startDate,
-        endDate,
       },
       create: {
         userId,
         status: 'active',
         plan,
-        startDate,
-        endDate,
       },
     });
 

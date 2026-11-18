@@ -3,8 +3,9 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params: paramsPromise }: { params: Promise<{ userId: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     const { userId } = params;
 

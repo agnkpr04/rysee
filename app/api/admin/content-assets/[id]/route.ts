@@ -5,8 +5,9 @@ import { isAdminRequest } from '@/lib/admin-auth';
 // GET - Get single content asset
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     if (!(await isAdminRequest(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -30,8 +31,9 @@ export async function GET(
 // PUT - Update content asset
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     if (!(await isAdminRequest(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -62,8 +64,9 @@ export async function PUT(
 // DELETE - Delete content asset
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     if (!(await isAdminRequest(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

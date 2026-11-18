@@ -111,6 +111,7 @@ export async function POST(request: NextRequest) {
         user.email,
         user.name,
         customerName,
+        customerEmail,
         userTemplate.masterTemplate.title,
         'template',
         userTemplate.masterTemplate.price

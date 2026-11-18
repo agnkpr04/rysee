@@ -4,8 +4,9 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     const { data: { session } } = await supabase.auth.getSession();
     
@@ -22,7 +23,6 @@ export async function GET(
     // Get order
     const order = await prisma.templateOrder.findUnique({
       where: { id: params.id },
-      include: { userTemplate: { include: { masterTemplate: true } } },
     });
 
     if (!order) {
@@ -57,9 +57,17 @@ export async function GET(
     }
 
     // Check download limit
-    if (order.downloadCount >= 3) {
+    const downloadCount = order.downloadCount ?? 0;
+    if (downloadCount >= 3) {
       return NextResponse.json(
         { error: 'Download limit exceeded' },
+        { status: 400 }
+      );
+    }
+
+    if (!order.downloadUrl) {
+      return NextResponse.json(
+        { error: 'Download link not available yet' },
         { status: 400 }
       );
     }
@@ -67,11 +75,11 @@ export async function GET(
     // Increment download count
     await prisma.templateOrder.update({
       where: { id: params.id },
-      data: { downloadCount: order.downloadCount + 1 },
+      data: { downloadCount: downloadCount + 1 },
     });
 
-    // Return download URL
-    return NextResponse.json({ downloadUrl: order.userTemplate.masterTemplate.downloadUrl });
+    // Return download URL (set by admin on delivery)
+    return NextResponse.json({ downloadUrl: order.downloadUrl });
   } catch (error) {
     console.error('Error downloading template:', error);
     return NextResponse.json(

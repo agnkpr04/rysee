@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { Star, Quote } from 'lucide-react';
 
 const accentGradient = "from-[#8B5CF6] via-[#D946EF] to-[#EC4899]";
@@ -61,7 +62,7 @@ export default function TestimonialsSection() {
 
               {/* Content */}
               <p className="text-sm text-[#18181B] leading-relaxed mb-6">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </p>
 
               {/* Author */}
@@ -83,12 +84,12 @@ export default function TestimonialsSection() {
           <p className="text-sm text-[#A1A1AA] mb-4">
             Ingin menjadi bagian dari mereka?
           </p>
-          <a
+          <Link
             href="/affstore"
             className="inline-block px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-full text-sm font-medium tracking-wider hover:opacity-90 transition"
           >
             Mulai Sekarang
-          </a>
+          </Link>
         </div>
       </div>
     </section>

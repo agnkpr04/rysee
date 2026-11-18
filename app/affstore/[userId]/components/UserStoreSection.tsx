@@ -1341,12 +1341,12 @@ export default function UserStoreSection({ userId, userName, initialStoreData }:
                   <>
                     <div className="flex items-center justify-between mb-6">
                       <h2 className="text-lg md:text-xl font-light text-[#18181B]">Website</h2>
-                      <a
+                      <Link
                         href="/templates"
                         className="flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-lg text-xs md:text-sm font-light hover:opacity-90 transition"
                       >
                         +Produk
-                      </a>
+                      </Link>
                     </div>
                     {isLoadingTemplates ? (
                       <div className="flex items-center justify-center py-16">
@@ -1364,13 +1364,13 @@ export default function UserStoreSection({ userId, userName, initialStoreData }:
                         <p className="text-sm text-[#A1A1AA] mb-6 max-w-md text-center">
                           Tambah website dari katalog untuk mulai menjual di toko Anda.
                         </p>
-                        <a
+                        <Link
                           href="/templates"
                           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-lg text-sm font-light hover:opacity-90 transition"
                         >
                           <Globe className="w-4 h-4" strokeWidth={1.5} />
                           Jelajahi Website
-                        </a>
+                        </Link>
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -1472,12 +1472,12 @@ export default function UserStoreSection({ userId, userName, initialStoreData }:
                   <>
                     <div className="flex items-center justify-between mb-6">
                       <h2 className="text-lg md:text-xl font-light text-[#18181B]">Produk Digital</h2>
-                      <a
+                      <Link
                         href="/digital-products"
                         className="flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-gradient-to-r from-[#8B5CF6] to-[#D946EF] text-white rounded-lg text-xs md:text-sm font-light hover:opacity-90 transition"
                       >
                         +Produk
-                      </a>
+                      </Link>
                     </div>
 
                     {/* Filter */}

@@ -89,7 +89,7 @@ export default function TestimonialsGrid() {
                     {item.profit}
                   </div>
                   <h3 className="text-xl font-light tracking-tight text-[#18181B] mb-3 leading-relaxed">
-                    "{item.content}"
+                    &quot;{item.content}&quot;
                   </h3>
                   <div className="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
                     <div>

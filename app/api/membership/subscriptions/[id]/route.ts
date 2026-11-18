@@ -4,8 +4,9 @@ import { prisma } from '@/lib/prisma';
 // DELETE subscription
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     const sessionCookie = request.cookies.get('admin_session');
     

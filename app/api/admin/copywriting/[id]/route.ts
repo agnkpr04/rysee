@@ -5,8 +5,9 @@ import { isAdminRequest } from '@/lib/admin-auth';
 // GET - Get single copywriting
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     if (!(await isAdminRequest(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -30,8 +31,9 @@ export async function GET(
 // PUT - Update copywriting
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     if (!(await isAdminRequest(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -61,8 +63,9 @@ export async function PUT(
 // DELETE - Delete copywriting
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params: paramsPromise }: { params: Promise<{ id: string }> }
 ) {
+  const params = await paramsPromise;
   try {
     if (!(await isAdminRequest(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

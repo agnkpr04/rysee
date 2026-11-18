@@ -98,6 +98,7 @@ export async function POST(request: NextRequest) {
         userDigitalProduct.user.email,
         userDigitalProduct.user.name,
         customerName,
+        customerEmail,
         userDigitalProduct.masterDigitalProduct.title,
         'digital-product',
         userDigitalProduct.masterDigitalProduct.price

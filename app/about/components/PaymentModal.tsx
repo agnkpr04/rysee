@@ -72,7 +72,7 @@ export default function PaymentModal({ isOpen, onClose, plan, planName, price }:
         script.src = 'https://app.midtrans.com/snap/snap.js';
         script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY!);
         script.onload = () => {
-          // @ts-ignore
+          // @ts-expect-error - midtrans snap SDK has no type definitions
           window.snap.pay(data.token, {
             onSuccess: (result: any) => {
               console.log('Payment success:', result);

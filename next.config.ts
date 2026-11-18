@@ -5,16 +5,7 @@ const nextConfig = {
   compiler: {
     styledComponents: false, 
   },
-  typescript: {
-    // Tetap abaikan error agar build tidak terhenti
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    // Abaikan error ESLint saat build untuk Vercel
-    ignoreDuringBuilds: true,
-  },
-  // BAGIAN ESLINT DIHAPUS DARI SINI
-  // Konfigurasi ESLint sekarang dikelola via eslint.config.mjs atau CLI
+  // Konfigurasi ESLint dikelola via eslint.config.mjs
   images: {
     remotePatterns: [
       {

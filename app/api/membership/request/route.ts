@@ -64,11 +64,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate plan (only paid tiers can be requested)
-    const validPlans: MembershipTier[] = ['pro', 'premium'];
+    const validPlans: MembershipTier[] = ['premium'];
     if (!validPlans.includes(plan as MembershipTier)) {
       console.log('[Payment Request] Invalid plan:', plan);
       return NextResponse.json(
-        { error: 'Invalid plan. Must be pro or premium.' },
+        { error: 'Invalid plan. Must be premium.' },
         { status: 400 }
       );
     }

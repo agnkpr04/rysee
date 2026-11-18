@@ -668,7 +668,7 @@ export default function UserStoreClient({
           script.src = 'https://app.midtrans.com/snap/snap.js';
           script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY!);
           script.onload = () => {
-            // @ts-ignore
+            // @ts-expect-error - midtrans snap SDK has no type definitions
             window.snap.pay(data.token, {
               onSuccess: (result: any) => {
                 console.log('Payment success:', result);
@@ -763,7 +763,7 @@ export default function UserStoreClient({
           script.src = 'https://app.midtrans.com/snap/snap.js';
           script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY!);
           script.onload = () => {
-            // @ts-ignore
+            // @ts-expect-error - midtrans snap SDK has no type definitions
             window.snap.pay(data.token, {
               onSuccess: (result: any) => {
                 console.log('Template payment success:', result);
@@ -1435,7 +1435,7 @@ export default function UserStoreClient({
                         <p>1. Transfer sesuai nominal ke rekening di atas</p>
                         <p>2. Screenshot bukti transfer</p>
                         <p>3. Upload bukti transfer di form ini</p>
-                        <p>4. Klik "Kirim Pesanan" dan tunggu verifikasi admin (maks 1x24 jam)</p>
+                        <p>4. Klik &quot;Kirim Pesanan&quot; dan tunggu verifikasi admin (maks 1x24 jam)</p>
                       </div>
                     </div>
 

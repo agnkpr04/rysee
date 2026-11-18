@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { Eye, Database, Lock, Globe } from 'lucide-react';
 
 const PrivacyPolicy = () => {
@@ -89,7 +90,7 @@ const PrivacyPolicy = () => {
             {/* Additional Note */}
             <div className="mt-10 p-10 bg-black/[0.02] rounded-[2rem] border border-black/[0.03]">
               <p className="text-sm text-black/40 italic font-serif">
-                "Kepercayaan Anda adalah aset paling berharga bagi Rysee. Kami tidak hanya membangun platform affiliate, tapi juga membangun rasa aman dalam setiap kolaborasi."
+                &quot;Kepercayaan Anda adalah aset paling berharga bagi Rysee. Kami tidak hanya membangun platform affiliate, tapi juga membangun rasa aman dalam setiap kolaborasi.&quot;
               </p>
             </div>
           </div>
@@ -117,7 +118,7 @@ const PrivacyPolicy = () => {
           Rysee © 2026 — Secure Operational System
         </span>
         <div className="flex gap-8 text-[10px] font-bold text-black/40 tracking-widest uppercase">
-          <a href="/terms-of-service" className="hover:text-black transition-colors">Terms</a>
+          <Link href="/ketentuan-layanan" className="hover:text-black transition-colors">Terms</Link>
           <a href="#" className="hover:text-black transition-colors">Security</a>
         </div>
       </footer>

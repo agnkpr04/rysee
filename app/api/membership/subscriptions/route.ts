@@ -23,8 +23,6 @@ export async function GET(request: NextRequest) {
       orderBy: { createdAt: 'desc' },
     });
 
-    const now = new Date();
-
     // Batch fetch user data from Supabase - get unique user IDs first
     const uniqueUserIds = [...new Set(subscriptions.map(sub => sub.userId))];
     
@@ -47,17 +45,11 @@ export async function GET(request: NextRequest) {
       })
     );
 
-    // Map users to subscriptions and calculate actual status
-    const subscriptionsWithUsers = subscriptions.map(sub => {
-      const isExpired = sub.endDate && new Date(sub.endDate) < now;
-      const actualStatus = isExpired ? 'expired' : sub.status;
-      
-      return {
-        ...sub,
-        status: actualStatus,
-        user: usersMap.get(sub.userId) || null,
-      };
-    });
+    // Map users to subscriptions
+    const subscriptionsWithUsers = subscriptions.map(sub => ({
+      ...sub,
+      user: usersMap.get(sub.userId) || null,
+    }));
 
     return NextResponse.json({ subscriptions: subscriptionsWithUsers });
   } catch (error) {

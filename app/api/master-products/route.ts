@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       .getPublicUrl(thumbnailFileName);
 
     // Handle content assets (upload to Supabase Storage)
-    let contentUrl: any = [];
+    const contentUrl: any = [];
     if (assets && assets.length > 0) {
       for (const file of assets) {
         const fileExt = file.name.split('.').pop();
